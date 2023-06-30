@@ -57,12 +57,11 @@ PHONENUMBER, FULLNAME,PASSWORD= range(3)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Starts the conversation and asks the user about their gender."""
-    reply_keyboard = [[KeyboardButton(text='Share number', request_contact=True)]]
-
+    reply_keyboard = [[KeyboardButton(text='Поделиться контактом', request_contact=True)]]
     await update.message.reply_text(
-        "Hello i  am bot ",
+        f"🧑‍💻Здравствуйте {update.message.from_user.first_name}.👋\nДанный бот предназначен для оформления заявок финансового отдела по согласованию оплат.\n\n📲 Пожалуйста введите свой номер телефона или нажмите кнопку \"Поделиться контактом\" ",
         reply_markup=ReplyKeyboardMarkup(
-            reply_keyboard, one_time_keyboard=True,input_field_placeholder="Please share you number?",resize_keyboard=True
+            reply_keyboard, one_time_keyboard=True,input_field_placeholder="Поделиться контактом",resize_keyboard=True
         ),
     )
 
@@ -73,7 +72,7 @@ async def phonenumber(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int
     """Stores the selected gender and asks for a photo."""
     context.user_data['phone_number'] = update.message.contact.phone_number
     await update.message.reply_text(
-        "Iltimos toliq ismingizni kiriting",
+        "Пожалуйста введите Имя, фамилию:",
         reply_markup=ReplyKeyboardRemove(),
     )
 
@@ -85,7 +84,7 @@ async def fullname(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     full_name = update.message.text
     context.user_data['full_name']=full_name
     await update.message.reply_text(
-        'iltimos menga passwordingizni yuboring'"va u kamida 6 belgidan iborat bolishiga etibor bering",
+        "Пожалуйста введите пароль для своего аккаунта, должен состоять минимум из 6 значений:",
     )
     return PASSWORD
 import json
@@ -98,10 +97,10 @@ async def password(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     r = requests.post(url=f"{BASE_URL}/register",data=json.dumps({'username':str(context.user_data['phone_number']),'password':(context.user_data['password']),'full_name':str(context.user_data['full_name']),'telegram_id':int(update.message.from_user.id)}))
     if r.status_code == 200:
         await update.message.reply_text(
-        "Sizning malumotlaringiz adminga yuborildi. va sizga tez orada sizga javob beramiz."
+        "Ваши данные на модерации. После подтверждения, вы получите уведомление."
     )
     else:
-        await update.message.reply_text('Siz oldin ro\'yhatdan otgansiz iltimsiz iltimos javob kelishini kuting')
+        await update.message.reply_text('Ваши данные на модерации. После подтверждения, вы получите уведомление.')
     return ConversationHandler.END
 
 
@@ -110,7 +109,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Cancels and ends the conversation."""
     user = update.message.from_user
     await update.message.reply_text(
-        "Bye! I hope we can talk again some day.", reply_markup=ReplyKeyboardRemove()
+        "Bye", reply_markup=ReplyKeyboardRemove()
     )
 
     return ConversationHandler.END
@@ -162,7 +161,7 @@ def main() -> None:
     callback_query_handler = CallbackQueryHandler(handle_callback_query)
     """Run the bot."""
     # Create the Application and pass it your bot's token.
-    application = Application.builder().token("6298581686:AAGVha0x_j3u-KPik0NDW6eSd_LBZ-0yQRI").build()
+    application = Application.builder().token("6185022051:AAFGD0-Np6gO0oWpKxtW9v4ji_-kuGGlnbE").build()
     application.add_handler(callback_query_handler)
 
     # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
