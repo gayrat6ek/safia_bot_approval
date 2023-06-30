@@ -161,7 +161,7 @@ def main() -> None:
     callback_query_handler = CallbackQueryHandler(handle_callback_query)
     """Run the bot."""
     # Create the Application and pass it your bot's token.
-    application = Application.builder().token("6185022051:AAFGD0-Np6gO0oWpKxtW9v4ji_-kuGGlnbE").build()
+    application = Application.builder().token("6298581686:AAGVha0x_j3u-KPik0NDW6eSd_LBZ-0yQRI").build()
     application.add_handler(callback_query_handler)
 
     # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
