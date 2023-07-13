@@ -139,11 +139,10 @@ async def handle_callback_query(update:Update, context: ContextTypes.DEFAULT_TYP
     query = update.callback_query
     selected_option = query.data
     reply_markup = InlineKeyboardMarkup([])
-    
+    message = query.message
     text_of_order = query.message.text
     user_id = query.from_user.id
     chat_id = message.chat_id
-    message = query.message
     message_id = message.message_id
     order_id = list(map(int, re.findall('\d+', text_of_order)))[0]
     order_update = requests.post(url=f"{BASE_URL}/update/order/status/from/telegram",data=json.dumps({'order_id':order_id,'telid':user_id,'status':selected_option}))
