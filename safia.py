@@ -149,10 +149,13 @@ async def handle_callback_query(update:Update, context: ContextTypes.DEFAULT_TYP
         chat_id = message.chat_id
         message_id = message.message_id
         await context.bot.edit_message_reply_markup(chat_id=chat_id, message_id=message_id, reply_markup=reply_markup)
-        await query.message.reply_text('you voted this order')
+        if selected_option == 'accepted':
+            await query.message.reply_text('Спасибо,вы согласовали оплату✅')
+        else:
+            await query.message.reply_text('Оплата не утверждена ❌')
     else:
         await context.bot.edit_message_reply_markup(chat_id=chat_id, message_id=message_id, reply_markup=reply_markup)
-        await query.message.reply_text('you cannot vote for this message')
+        await query.message.reply_text('Вы уже проголосовали ✅', reply_markup=ReplyKeyboardRemove())
 
 
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
