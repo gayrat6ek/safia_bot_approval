@@ -147,13 +147,13 @@ async def handle_callback_query(update:Update, context: ContextTypes.DEFAULT_TYP
     order_id = list(map(int, re.findall('\d+', text_of_order)))[0]
     order_update = requests.post(url=f"{BASE_URL}/update/order/status/from/telegram",data=json.dumps({'order_id':order_id,'telid':user_id,'status':selected_option}))
     if order_update.status_code == 200: 
-        await context.bot.edit_message_reply_markup(chat_id=chat_id, message_id=message_id, reply_markup=reply_markup)
+        await context.bot.delete_message(chat_id=chat_id,message_id=message_id)
         if selected_option == 'accepted':
             await query.message.reply_text('Спасибо,вы согласовали оплату✅')
         else:
             await query.message.reply_text('Оплата не утверждена ❌')
     else:
-        await context.bot.edit_message_reply_markup(chat_id=chat_id, message_id=message_id, reply_markup=reply_markup)
+        await context.bot.delete_message(chat_id=chat_id,message_id=message_id)
         await query.message.reply_text('Вы уже проголосовали ✅')
 
 
